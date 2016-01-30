@@ -10,8 +10,11 @@ class Order(models.Model)
         default=lambda self: self.env.user.company_id.partner_id)
     name = field.Char(string="Tile", required=True)
     content = field.Text(string="Description", required=True)
-    solved = field.Boolean(default=False)
-    deleted = field.Boolean(default=False)
+    state = fields.Selection([
+        ('deleted', "Deleted"),
+        ('solved', "Solved"),
+        ('open', "Open"),
+    ], default='open')
 
     @api.multi
     def write(self, vals):
