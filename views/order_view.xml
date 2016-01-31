@@ -13,6 +13,13 @@
 			</field>
 		</record>
 
+		<record model="ir.actions.act_window.view" id="action_my_order_tree_view">
+			<field name="sequence" eval="1"/>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="my_order_tree_view"/>
+			<field name="act_window_id" ref="action_my_order_tree_view"/>
+		</record> 
+
 		<!-- ORDER VIEW TO LIST ALL ORDERS FROM A SPECIFIC COMPANY -->
 		<record model="ir.ui.view" id="company_order_tree_view">
 			<field name="name">order.tree</field>
@@ -24,6 +31,13 @@
 				</tree>
 			</field>
 		</record>
+
+		<record model="ir.actions.act_window.view" id="action_company_order_tree_view">
+			<field name="sequence" eval="1"/>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="company_order_tree_view"/>
+			<field name="act_window_id" ref="action_company_order_tree_view"/>
+		</record> 
 
 		<!-- ORDER VIEW TO LIST TRACKED ORDERS TO AGENT -->
 		<!-- TODO: Create a domain to list order based in helpdesk.track_follow model-->
@@ -38,8 +52,15 @@
 			</field>
 		</record>
 
+		<record model="ir.actions.act_window.view" id="action_tracked_order_tree_view">
+			<field name="sequence" eval="1"/>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="tracked_order_tree_view"/>
+			<field name="act_window_id" ref="action_tracked_order_tree_view"/>
+		</record> 
+
 		<!-- ORDER VIEW TO LIST ALL ORDERS -->
-		<record model="ir.ui.view" id="tracked_order_tree_view">
+		<record model="ir.ui.view" id="orders_tree_view">
 			<field name="name">order.tree</field>
 			<field name="model">helpdesk.order</field>
 			<field name="arch" typ="xml">
@@ -49,6 +70,13 @@
 				</tree>
 			</field>
 		</record>
+
+		<record model="ir.actions.act_window.view" id="action_orders_tree_view">
+			<field name="sequence" eval="1"/>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="orders_tree_view"/>
+			<field name="act_window_id" ref="action_orders_tree_view"/>
+		</record> 
 
 		<!-- ORDER FORM VIEW -->
 		<!-- TODO: Load order answers -->
@@ -67,6 +95,15 @@
 				</form>
 			</field>
 		</record>
+
+	<!--
+		<record model="ir.actions.act_window" id="action_order_form_view">
+			<field name="name">Order</field>
+			<field name="res_model">helpdesk.order</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+		</record>
+	-->
 
 	</data>
 </openerp>
