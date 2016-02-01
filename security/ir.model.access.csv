@@ -1,1 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+order_manager,order manager,model_helpdesk_order,group_manager,1,1,1,1
+helpdesk_manager,helpdesk answer manager,model_helpdesk_answer,group_manager,1,1,1,1
+helpdesk_manager,helpdesk track manager,model_helpdesk_track_follow,group_manager,1,1,1,1
+order_read_write,order read write,model_helpdesk_order,,1,1,1,0
+helpdesk_answer_read_write,helpdesk read write,model_helpdesk_answer,,1,1,1,0
+helpdesk_track_read_write,helpdesk read write,model_helpdesk_track_follow,,1,1,1,0

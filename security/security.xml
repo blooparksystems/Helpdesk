@@ -1,11 +1,11 @@
 <openerp>
 	<data>
-		<!-- All partner is here -->
-		<record id="partner" model="res.groups">
-			<field name="name">Partner</field>
+		<!-- Partners can create and close orders. -->
+		<record id="employee" model="res.groups">
+			<field name="name">Employee</field>
 		</record>
 
-		<!-- Company Manager can manage orders of your company. -->
+		<!-- Company Manager can open, close and manage orders of your company. -->
 		<record id="company_manager" model="res.groups">
 			<field name="name">Company Manager</field>
 		</record>
