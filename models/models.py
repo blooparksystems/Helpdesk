@@ -67,13 +67,15 @@ class Answer(models.Model)
         self.state = 'deleted'
 
     @api.multi
-    def action_track(self, vals):
+    def action_track(self):
         self.state = 'tracked'
+        vals = {'order_id': self.order_id, 'user_id': self.env.user.id, 'name': self.name, 'state': self.state}
         self.pool.get('helpdesk.track_follow').create(vals)
 
     @api.multi 
-    def action_assign(self, vals):
+    def action_assign(self):
         self.state = 'tracked'
+        vals = {'order_id': self.order_id, 'user_id': self.env.user.id, 'name': self.name, 'state': self.state}
         self.pool.get('helpdesk.track_follow').create(vals)
 
 
