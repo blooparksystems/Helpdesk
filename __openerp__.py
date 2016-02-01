@@ -16,7 +16,8 @@
 
     'data': [
         'security/ir.model.access.csv',
-	'views/order_view.xml',
+        'security/security.xml',
+        'views/order_view.xml',
     ],
 
     'demo': [
