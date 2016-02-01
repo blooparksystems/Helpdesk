@@ -29,6 +29,18 @@ class Order(models.Model)
         registration.sudo().confirm_registration()
         return registration
 
+    @api.multi
+    def action_open(self):
+        self.state = 'open'
+
+    @api.multi
+    def action_solved(self):
+        self.state = 'solved'
+
+    @api.multi
+    def action_deleted(self):
+        self.state = 'deleted'
+
 
 class Answer(models.Model)
     _name = 'helpdesk.answer'
