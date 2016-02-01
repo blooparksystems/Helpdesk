@@ -67,3 +67,5 @@ class Track_Follow(models.Model)
     partner_id = fields.Many2one(
         'res.partner', string='Employee_Manager',
         default=lambda self: self.env.user.company_id.partner_id)
+    name = fields.Selection(related='order_id.name')
+    state = fields.Selection(related='order_id.state')
