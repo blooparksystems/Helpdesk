@@ -7,8 +7,8 @@
 			<field name="model">helpdesk.order</field>
 			<field anme="arch" type="xml">
 				<tree string="My Orders">
-					<field name="name" domain="['&',('partner_id','=',partner_id), ('company_id','=',company_id)]"/>
-					<field name="state" domain="['&',('partner_id','=',partner_id), ('company_id','=',company_id)]"/>
+					<field name="name" domain="['&',('partner_id','=',user.partner_id.id), ('company_id','=',user.partner_id.company_id.id)]"/>
+					<field name="state" domain="['&',('partner_id','=',user.partner_id.id), ('company_id','=',user.partner_id.company_id.id)]"/>
 				</tree>
 			</field>
 		</record>
@@ -26,8 +26,8 @@
 			<field name="model">helpdesk.order</field>
 			<field anme="arch" type="xml">
 				<tree string="Orders">
-					<field name="name" domain="[('company_id','=',company_id)]"/>
-					<field name="state" domain="[('company_id','=',company_id)]"/>
+					<field name="name" domain="[('company_id','=',user.partner_id.company_id.id)]"/>
+					<field name="state" domain="[('company_id','=',user.partner_id.company_id.id)]"/>
 				</tree>
 			</field>
 		</record>
