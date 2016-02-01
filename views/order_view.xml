@@ -50,7 +50,7 @@
 		<!-- ORDER VIEW TO LIST TRACKED ORDERS TO AGENT -->
 		<record model="ir.ui.view" id="tracked_order_tree_view">
 			<field name="name">order.tree</field>
-			<field name="model">helpdesk.track_follow</field>
+			<field name="model">helpdesk.track.follow</field>
 			<field name="arch" typ="xml">
 				<tree string="Tracked Orders">
 					<field name="name" domain="[('user_id','=',user.id)]"/>
@@ -114,9 +114,9 @@
 			<field name="arch" type="xml">
 				<form string="Order Form">
 					<header>
-						<button name="action_open" type="object" groups="partner" string="Open" states="open" class="oe_highlight"/>
-						<button name="action_solved" type="object" groups="partner" string="Solved" states="solved" class="oe_highlight"/>
-						<button name="action_deleted" type="object" groups="partner" string="Delete" states="deleted" class="oe_highlight"/>
+						<button name="action_open" type="object" groups="employee,company_manager" string="Open" states="open" class="oe_highlight"/>
+						<button name="action_solved" type="object" groups="employee,company_manager" string="Solved" states="solved" class="oe_highlight"/>
+						<button name="action_deleted" type="object" groups="company_manager" string="Delete" states="deleted" class="oe_highlight"/>
 						<button name="action_message" type="object" string="Send message" class="oe_highlight"/>
 						<button name="action_track" type="object" groups="agents" string="Track" states="tracked" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
 						<button name="action_assign" type="object" groups="helpdesk_manager" string="Assign" states="tracked" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
@@ -149,11 +149,11 @@
 	<menuitem id="helpdesk_menu" name="HelpDesk" parent="main_helpdesk_menu"/>
 
 	<!-- Submenu -->
-	<menuitem id="my_order_menu" name="My Orders" groups="partner" parent="helpdesk_menu" action="action_my_order_tree_view"/>
+	<menuitem id="my_order_menu" name="My Orders" groups="employee,company_manager" parent="helpdesk_menu" action="action_my_order_tree_view"/>
 	<menuitem id="company_order_menu" name="Company Orders" groups="company_manager" parent="helpdesk_menu" action="action_company_order_tree_view"/>
 	<menuitem id="tracked_order_menu" name="Tracked Orders" groups="agents" parent="helpdesk_menu" action="action_tracked_order_tree_view"/>
 	<menuitem id="open_order_menu" name="Open Orders" groups="agents" parent="helpdesk_menu" action="action_open_order_tree_view"/>
-	<menuitem id="orders_menu" name="Orders" groups="helpdesk_manager" parent="helpdesk_menu" action="action_orders_tree_view"/>
+	<menuitem id="all_orders_menu" name="All Orders" groups="helpdesk_manager" parent="helpdesk_menu" action="action_orders_tree_view"/>
 
 	</data>
 </openerp>
