@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields
+from openerp import models, fields, api
 
 class Order(models.Model)
     _name = 'helpdesk.order'
@@ -17,6 +17,7 @@ class Order(models.Model)
         ('deleted', "Deleted"),
         ('solved', "Solved"),
         ('open', "Open"),
+        ('tracked', "Tracked"),
     ], default='open')
 
     @api.multi
@@ -28,21 +29,9 @@ class Order(models.Model)
 
     @api.model
     def create(self, vals):
-        registration = super(Order, self).create(vals)
-        registration.sudo().confirm_registration()
+        res = super(Order, self).create(vals)
+        res.sudo().confirm_registration()
         return registration
-
-    @api.multi
-    def action_open(self):
-        self.state = 'open'
-
-    @api.multi
-    def action_solved(self):
-        self.state = 'solved'
-
-    @api.multi
-    def action_deleted(self):
-        self.state = 'deleted'
 
 
 class Answer(models.Model)
@@ -56,20 +45,36 @@ class Answer(models.Model)
         default=lambda self: self.env.user.id)
     name = fields.Char(related='order_id.name')
     description = fields.Text(related='order_id.content')
-    message = field.Char(string="Message", required=True)
+    message = field.Text(string="Message", required=True)
+    state = fields.Selection(related='order_id.state')
 
     @api.multi
-    def write(self, vals):
-        res = super(Answer, self).write(vals)
-        if vals.get('user_id'):
-            self.message_subscribe([vals['user_id']])
+    def action_message(self, vals):
+        res = super(Answer, self).create(vals)
+        res.sudo().confirm_registration()
         return res
 
-    @api.model
-    def create(self, vals):
-        registration = super(Order, self).create(vals)
-        registration.sudo().confirm_registration()
-        return registration
+    @api.multi
+    def action_open(self):
+        self.state = 'open'
+
+    @api.multi
+    def action_solved(self):
+        self.state = 'solved'
+
+    @api.multi
+    def action_deleted(self):
+        self.state = 'deleted'
+
+    @api.multi
+    def action_track(self, vals):
+        self.state = 'tracked'
+        self.pool.get('helpdesk.track_follow').create(vals)
+
+    @api.multi 
+    def action_assign(self, vals):
+        self.state = 'tracked'
+        self.pool.get('helpdesk.track_follow').create(vals)
 
 
 class Track_Follow(models.Model)
@@ -86,3 +91,9 @@ class Track_Follow(models.Model)
         default=lambda self: self.env.user.partner_id.id)
     name = fields.Char(related='order_id.name')
     state = fields.Selection(related='order_id.state')
+
+    @api.multi
+    def create(self, vals):
+        res = super(Track_Follow, self).create(vals)
+        res.sudo().confirm_registration()
+        return res
