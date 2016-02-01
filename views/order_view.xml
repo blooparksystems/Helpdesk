@@ -105,5 +105,18 @@
 		</record>
 	-->
 
+	<!-- MENU -->
+	<!-- top level menu: no parent -->
+	<menuitem id="main_helpdesk_menu" name="HelpDesk"/>
+
+	<!-- A first level in the left side menu is needed before using action= attribute -->
+	<menuitem id="helpdesk_menu" name="HelpDesk" parent="main_helpdesk_menu"/>
+
+	<!-- Submenu -->
+	<menuitem id="my_order_menu" name="My Orders" groups="partner" parent="helpdesk_menu" action="action_my_order_tree_view"/>
+	<menuitem id="company_order_menu" name="Company Orders" groups="company_manager" parent="helpdesk_menu" action="action_company_order_tree_view"/>
+	<menuitem id="tracked_order_menu" name="Tracked Orders" groups="agents" parent="helpdesk_menu" action="action_tracked_order_tree_view"/>
+	<menuitem id="orders_menu" name="Orders" groups="helpdesk_manager" parent="helpdesk_menu" action="action_orders_tree_view"/>
+
 	</data>
 </openerp>
