@@ -59,6 +59,25 @@
 			<field name="act_window_id" ref="action_tracked_order_tree_view"/>
 		</record> 
 
+		<!-- ORDER VIEW TO LIST OPEN ORDERS TO AGENT -->
+		<record model="ir.ui.view" id="open_order_tree_view">
+			<field name="name">order.tree</field>
+			<field name="model">helpdesk.order</field>
+			<field name="arch" typ="xml">
+				<tree string="Open Orders">
+					<field name="name" domain="[('state','=','open')]"/>
+					<field name="state" domain="[('state','=','open')]"/>
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window.view" id="action_open_order_tree_view">
+			<field name="sequence" eval="1"/>
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="open_order_tree_view"/>
+			<field name="act_window_id" ref="action_open_order_tree_view"/>
+		</record> 
+
 		<!-- ORDER VIEW TO LIST ALL ORDERS -->
 		<record model="ir.ui.view" id="orders_tree_view">
 			<field name="name">order.tree</field>
@@ -116,6 +135,7 @@
 	<menuitem id="my_order_menu" name="My Orders" groups="partner" parent="helpdesk_menu" action="action_my_order_tree_view"/>
 	<menuitem id="company_order_menu" name="Company Orders" groups="company_manager" parent="helpdesk_menu" action="action_company_order_tree_view"/>
 	<menuitem id="tracked_order_menu" name="Tracked Orders" groups="agents" parent="helpdesk_menu" action="action_tracked_order_tree_view"/>
+	<menuitem id="open_order_menu" name="Open Orders" groups="agents" parent="helpdesk_menu" action="action_open_order_tree_view"/>
 	<menuitem id="orders_menu" name="Orders" groups="helpdesk_manager" parent="helpdesk_menu" action="action_orders_tree_view"/>
 
 	</data>
