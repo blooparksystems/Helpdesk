@@ -7,7 +7,10 @@ class Order(models.Model)
 
     partner_id = fields.Many2one(
         'res.partner', string='Employee_Manager',
-        default=lambda self: self.env.user.company_id.partner_id)
+        default=lambda self: self.env.user.partner_id.id)
+    company_id = fields.Many2one(
+        'res.partner', string='Employee_Manager',
+        default=lambda self: self.env.user.partner_id.company_id.id)
     name = field.Char(string="Tile", required=True)
     content = field.Text(string="Description", required=True)
     state = fields.Selection([
@@ -50,7 +53,7 @@ class Answer(models.Model)
         readonly=True)
     user_id = fields.Many2one(
         'res.users', string='Agent_Manager',
-        default=lambda self: self.env.user)
+        default=lambda self: self.env.user.id)
     name = fields.Char(related='order_id.name')
     description = fields.Text(related='order_id.content')
     message = field.Char(string="Message", required=True)
@@ -77,9 +80,9 @@ class Track_Follow(models.Model)
         readonly=True)
     user_id = fields.Many2one(
         'res.users', string='Agent_Manager',
-        default=lambda self: self.env.user)
+        default=lambda self: self.env.user.id)
     partner_id = fields.Many2one(
         'res.partner', string='Employee_Manager',
-        default=lambda self: self.env.user.company_id.partner_id)
+        default=lambda self: self.env.user.partner_id.id)
     name = fields.Char(related='order_id.name')
     state = fields.Selection(related='order_id.state')
