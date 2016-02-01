@@ -51,7 +51,9 @@ class Answer(models.Model)
     user_id = fields.Many2one(
         'res.users', string='Agent_Manager',
         default=lambda self: self.env.user)
-    content = field.Char(string="Message", required=True)
+    name = fields.Char(related='order_id.name')
+    description = fields.Text(related='order_id.content')
+    message = field.Char(string="Message", required=True)
 
     @api.multi
     def write(self, vals):
@@ -79,5 +81,5 @@ class Track_Follow(models.Model)
     partner_id = fields.Many2one(
         'res.partner', string='Employee_Manager',
         default=lambda self: self.env.user.company_id.partner_id)
-    name = fields.Selection(related='order_id.name')
+    name = fields.Char(related='order_id.name')
     state = fields.Selection(related='order_id.state')
