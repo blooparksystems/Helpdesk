@@ -11,6 +11,10 @@
 					<field name="state" domain="['&',('partner_id','=',user.partner_id.id), ('company_id','=',user.partner_id.company_id.id)]"/>
 				</tree>
 			</field>
+			<button string="New Order" name="%(action_order_form_view)d" type="action"/>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">Create the first order</p>
+			</field>
 		</record>
 
 		<record model="ir.actions.act_window.view" id="action_my_order_tree_view">
@@ -30,6 +34,10 @@
 					<field name="state" domain="[('company_id','=',user.partner_id.company_id.id)]"/>
 				</tree>
 			</field>
+			<button string="New Order" name="%(action_order_form_view)d" type="action"/>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">Create the first order</p>
+			</field>
 		</record>
 
 		<record model="ir.actions.act_window.view" id="action_company_order_tree_view">
@@ -48,6 +56,9 @@
 					<field name="name" domain="[('user_id','=',user.id)]"/>
 					<field name="state" domain="[('user_id','=',user.id)]"/>
 				</tree>
+			</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">Track the first order</p>
 			</field>
 		</record>
 
@@ -102,6 +113,16 @@
 			<field name="model">helpdesk.answer</field>
 			<field name="arch" type="xml">
 				<form string="Order Form">
+					<header>
+						<button name="action_open" type="object" groups="partner" string="Open" states="open" class="oe_highlight"/>
+						<button name="action_solved" type="object" groups="partner" string="Solved" states="solved" class="oe_highlight"/>
+						<button name="action_deleted" type="object" groups="partner" string="Delete" states="deleted" class="oe_highlight"/>
+						<button name="action_message" type="object" string="Send message" class="oe_highlight"/>
+						<button name="action_track" type="object" groups="agents" string="Track" states="tracked" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
+						<button name="action_assign" type="object" groups="helpdesk_manager" string="Assign" states="tracked" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+
 					<sheet>
 						<group>
 							<field name="name"/>
@@ -113,14 +134,12 @@
 			</field>
 		</record>
 
-	<!--
 		<record model="ir.actions.act_window" id="action_order_form_view">
 			<field name="name">Order</field>
 			<field name="res_model">helpdesk.order</field>
 			<field name="view_type">form</field>
 			<field name="view_mode">form</field>
 		</record>
-	-->
 
 	<!-- MENU -->
 	<!-- top level menu: no parent -->

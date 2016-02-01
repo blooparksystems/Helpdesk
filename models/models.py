@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields
+from openerp import models, fields, api
 
 class Order(models.Model)
     _name = 'helpdesk.order'
