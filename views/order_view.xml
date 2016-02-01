@@ -26,14 +26,13 @@
 		</record>
 
 		<!-- ORDER VIEW TO LIST TRACKED ORDERS TO AGENT -->
-		<!-- TODO: Create a domain to list order based in helpdesk.track_follow model-->
 		<record model="ir.ui.view" id="tracked_order_tree_view">
 			<field name="name">order.tree</field>
-			<field name="model">helpdesk.order</field>
+			<field name="model">helpdesk.track_follow</field>
 			<field name="arch" typ="xml">
 				<tree string="Tracked Orders">
-					<field name="name"/>
-					<field name="state"/>
+					<field name="name" domain="[('user_id','=',user.id)]"/>
+					<field name="state" domain="[('user_id','=',user.id)]"/>
 				</tree>
 			</field>
 		</record>
@@ -50,18 +49,17 @@
 			</field>
 		</record>
 
-		<!-- ORDER FORM VIEW -->
-		<!-- TODO: Load order answers -->
+		<!-- ANSWER ORDER FORM VIEW -->
 		<record model="ir.ui.view" id="order_form_view">
 			<field name="name">order.form</field>
-			<field name="model">helpdesk.order</field>
+			<field name="model">helpdesk.answer</field>
 			<field name="arch" type="xml">
 				<form string="Order Form">
 					<sheet>
 						<group>
 							<field name="name"/>
-							<field name="content"/>
-							<field name=""/>
+							<field name="description"/>
+							<field name="message"/>
 						</group>
 					<sheet>
 				</form>
