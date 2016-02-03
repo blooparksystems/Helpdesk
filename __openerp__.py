@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "helpdesk",
+    'name': "HelpDesk",
 
     'summary': "",
 
@@ -15,8 +15,8 @@
     'depends': ['base'],
 
     'data': [
-        'security/ir.model.access.csv',
         'security/security.xml',
+        'security/ir.model.access.csv',
         'views/order_view.xml',
     ],
 

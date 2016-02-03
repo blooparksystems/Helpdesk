@@ -2,7 +2,7 @@
 
 from openerp import models, fields, api
 
-class Order(models.Model)
+class Order(models.Model):
     _name = 'helpdesk.order'
 
     partner_id = fields.Many2one(
@@ -11,8 +11,8 @@ class Order(models.Model)
     company_id = fields.Many2one(
         'res.partner', string='Employee_Manager',
         default=lambda self: self.env.user.partner_id.company_id.id)
-    name = field.Char(string="Tile", required=True)
-    content = field.Text(string="Description", required=True)
+    name = fields.Char(string="Title", required=True)
+    content = fields.Text(string="Description", required=True)
     state = fields.Selection([
         ('deleted', "Deleted"),
         ('solved', "Solved"),
@@ -34,7 +34,7 @@ class Order(models.Model)
         return registration
 
 
-class Answer(models.Model)
+class Answer(models.Model):
     _name = 'helpdesk.answer'
 
     order_id = fields.Many2one(
@@ -45,7 +45,7 @@ class Answer(models.Model)
         default=lambda self: self.env.user.id)
     name = fields.Char(related='order_id.name')
     description = fields.Text(related='order_id.content')
-    message = field.Text(string="Message", required=True)
+    message = fields.Text(string="Message", required=True)
     state = fields.Selection(related='order_id.state')
 
     @api.multi
@@ -79,7 +79,7 @@ class Answer(models.Model)
         self.pool.get('helpdesk.track.follow').create(vals)
 
 
-class Track_Follow(models.Model)
+class Track_Follow(models.Model):
     _name = 'helpdesk.track.follow'
 
     order_id = fields.Many2one(

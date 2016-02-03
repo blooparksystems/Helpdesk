@@ -1,14 +1,14 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <openerp>
 	<data>
 		<!-- ORDER VIEW TO LIST EMPLOYEE AND MANAGER ORDERS -->
 		<record model="ir.ui.view" id="my_order_tree_view">
 			<field name="name">order.tree</field>
 			<field name="model">helpdesk.order</field>
-			<field anme="arch" type="xml">
+			<field name="arch" type="xml">
 				<tree string="My Orders">
-					<field name="name" domain="['&',('partner_id','=',user.partner_id.id), ('company_id','=',user.partner_id.company_id.id)]"/>
-					<field name="state" domain="['&',('partner_id','=',user.partner_id.id), ('company_id','=',user.partner_id.company_id.id)]"/>
+					<field name="name" domain="['&amp;',('partner_id','=',user.partner_id.id), ('company_id','=',user.partner_id.company_id.id)]"/>
+					<field name="state" domain="['&amp;',('partner_id','=',user.partner_id.id), ('company_id','=',user.partner_id.company_id.id)]"/>
 				</tree>
 			</field>
 			<button string="New Order" name="%(action_order_form_view)d" type="action"/>
@@ -28,7 +28,7 @@
 		<record model="ir.ui.view" id="company_order_tree_view">
 			<field name="name">order.tree</field>
 			<field name="model">helpdesk.order</field>
-			<field anme="arch" type="xml">
+			<field name="arch" type="xml">
 				<tree string="Orders">
 					<field name="name" domain="[('company_id','=',user.partner_id.company_id.id)]"/>
 					<field name="state" domain="[('company_id','=',user.partner_id.company_id.id)]"/>
@@ -129,7 +129,7 @@
 							<field name="description"/>
 							<field name="message"/>
 						</group>
-					<sheet>
+					</sheet>
 				</form>
 			</field>
 		</record>
@@ -141,19 +141,19 @@
 			<field name="view_mode">form</field>
 		</record>
 
-	<!-- MENU -->
-	<!-- top level menu: no parent -->
-	<menuitem id="main_helpdesk_menu" name="HelpDesk"/>
+		<!-- MENU -->
+		<!-- top level menu: no parent -->
+		<menuitem id="main_helpdesk_menu" name="HelpDesk"/>
 
-	<!-- A first level in the left side menu is needed before using action= attribute -->
-	<menuitem id="helpdesk_menu" name="HelpDesk" parent="main_helpdesk_menu"/>
+		<!-- A first level in the left side menu is needed before using action= attribute -->
+		<menuitem id="helpdesk_menu" name="HelpDesk" parent="main_helpdesk_menu"/>
 
-	<!-- Submenu -->
-	<menuitem id="my_order_menu" name="My Orders" groups="employee,company_manager" parent="helpdesk_menu" action="action_my_order_tree_view"/>
-	<menuitem id="company_order_menu" name="Company Orders" groups="company_manager" parent="helpdesk_menu" action="action_company_order_tree_view"/>
-	<menuitem id="tracked_order_menu" name="Tracked Orders" groups="agents" parent="helpdesk_menu" action="action_tracked_order_tree_view"/>
-	<menuitem id="open_order_menu" name="Open Orders" groups="agents" parent="helpdesk_menu" action="action_open_order_tree_view"/>
-	<menuitem id="all_orders_menu" name="All Orders" groups="helpdesk_manager" parent="helpdesk_menu" action="action_orders_tree_view"/>
+		<!-- Submenu -->
+		<menuitem id="my_order_menu" name="My Orders" groups="employee,company_manager" parent="helpdesk_menu" action="action_my_order_tree_view"/>
+		<menuitem id="company_order_menu" name="Company Orders" groups="company_manager" parent="helpdesk_menu" action="action_company_order_tree_view"/>
+		<menuitem id="tracked_order_menu" name="Tracked Orders" groups="agents" parent="helpdesk_menu" action="action_tracked_order_tree_view"/>
+		<menuitem id="open_order_menu" name="Open Orders" groups="agents" parent="helpdesk_menu" action="action_open_order_tree_view"/>
+		<menuitem id="all_orders_menu" name="All Orders" groups="helpdesk_manager" parent="helpdesk_menu" action="action_orders_tree_view"/>
 
 	</data>
 </openerp>
