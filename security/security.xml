@@ -1,22 +1,22 @@
 <openerp>
 	<data>
 		<!-- Partners can create and close orders. -->
-		<record id="employee" model="res.groups">
+		<record id="base.employee" model="res.groups">
 			<field name="name">Employee</field>
 		</record>
 
 		<!-- Company Manager can open, close and manage orders of your company. -->
-		<record id="company_manager" model="res.groups">
+		<record id="base.company_manager" model="res.groups">
 			<field name="name">Company Manager</field>
 		</record>
 
 		<!-- Agent can track and answer the issues. -->
-		<record id="agents" model="res.groups">
+		<record id="base.agents" model="res.groups">
 			<field name="name">Agents</field>
 		</record>
 
 		<!-- HelpDesk Manager manage the helpdesk application. -->
-		<record id="helpdesk_manager" model="res.groups">
+		<record id="base.helpdesk_manager" model="res.groups">
 			<field name="name">HelpDesk Manager</field>
 		</record>
 
