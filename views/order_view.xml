@@ -2,25 +2,38 @@
 <openerp>
 	<data>
 		<!-- ANSWER ORDER FORM VIEW -->
-		<record model="ir.ui.view" id="order_form_view">
+		<record model="ir.ui.view" id="answer_form_view">
 			<field name="name">order.form</field>
 			<field name="model">helpdesk.answer</field>
 			<field name="arch" type="xml">
+				<form string="Answer Form">
+					<button name="action_message" type="object" string="Send message" class="oe_highlight"/>
+					<sheet>
+						<group>
+							<field name="name" readonly="1"/>
+							<field name="description" readonly="1"/>
+							<field name="message"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="order_form_view">
+			<field name="name">order.form</field>
+			<field name="model">helpdesk.order</field>
+			<field name="arch" type="xml">
 				<form string="Order Form">
 					<header>
-						<button name="action_open" type="object" groups="base.employee,base.company_manager" string="Open" states="open" class="oe_highlight"/>
-						<button name="action_solved" type="object" groups="base.employee,base.company_manager" string="Solved" states="solved" class="oe_highlight"/>
-						<button name="action_deleted" type="object" groups="base.company_manager" string="Delete" states="deleted" class="oe_highlight"/>
-						<button name="action_message" type="object" string="Send message" class="oe_highlight"/>
-						<button name="action_track" type="object" groups="base.agents" string="Track" states="tracked" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
-						<button name="action_assign" type="object" groups="base.helpdesk_manager" string="Assign" states="tracked" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
+						<button name="action_solved" type="object" groups="base.employee,base.company_manager" string="Solved" class="oe_highlight"/>
+						<button name="action_deleted" type="object" groups="base.company_manager" string="Delete" class="oe_highlight"/>
+						<button name="action_track" type="object" groups="base.agents" string="Track" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
+						<button name="action_assign" type="object" groups="base.helpdesk_manager" string="Assign" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
                     </header>
-
 					<sheet>
 						<group>
 							<field name="name"/>
-							<field name="description"/>
-							<field name="message"/>
+							<field name="content"/>
 						</group>
 					</sheet>
 				</form>
@@ -40,7 +53,7 @@
 			<field name="model">helpdesk.order</field>
 			<field name="arch" type="xml">
 				<tree string="My Orders">
-					<button string="New Order" name="%(action_order_form_view)d" type="action"/>
+					<!-- <button string="New Order" name="%(action_order_form_view)d" type="action"/> -->
 					<field name="name" domain="['&amp;',('partner_id','=',user.partner_id.id), ('company_id','=',user.partner_id.company_id.id)]" readonly="1"/>
 					<field name="state" domain="['&amp;',('partner_id','=',user.partner_id.id), ('company_id','=',user.partner_id.company_id.id)]" readonly="1"/>
 				</tree>
@@ -64,7 +77,7 @@
 			<field name="model">helpdesk.order</field>
 			<field name="arch" type="xml">
 				<tree string="Orders">
-					<button string="New Order" name="%(action_order_form_view)d" type="action"/>
+					<!-- <button string="New Order" name="%(action_order_form_view)d" type="action"/> -->
 					<field name="name" domain="[('company_id','=',user.partner_id.company_id.id)]" readonly="1"/>
 					<field name="state" domain="[('company_id','=',user.partner_id.company_id.id)]" readonly="1"/>
 				</tree>

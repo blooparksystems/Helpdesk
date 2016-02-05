@@ -7,13 +7,13 @@ class Order(models.Model):
 
     partner_id = fields.Many2one(
         'res.partner', string='Employee',
-        default=lambda self: self.env.user.partner_id.id, store=True)
+        default=lambda self: self.env.user.partner_id.id, store=True, invisible="1")
     company_id = fields.Many2one(
         'res.partner', string='Company',
-        default=lambda self: self.env.user.partner_id.company_id.id, store=True)
+        default=lambda self: self.env.user.partner_id.company_id.id, store=True, invisible="1")
     name = fields.Char(string="Title", required=True, store=True)
     content = fields.Text(string="Description", required=True, store=True)
-    state = fields.Selection([
+    states = fields.Selection([
         ('deleted', "Deleted"),
         ('solved', "Solved"),
         ('open', "Open"),
@@ -31,6 +31,24 @@ class Order(models.Model):
         res = super(Order, self).create(vals)
         res.sudo().confirm_registration()
         return res
+
+    @api.multi
+    def action_solved(self):
+        self.state = 'solved'
+
+    @api.multi
+    def action_deleted(self):
+        self.state = 'deleted'
+
+    @api.multi
+    def action_track(self):
+        vals = {'order_id': self.order_id, 'user_id': self.env.user.id, 'name': self.name, 'state': self.state}
+        self.pool.get('helpdesk.track.follow').create(vals)
+
+    @api.multi 
+    def action_assign(self):
+        vals = {'order_id': self.order_id, 'user_id': self.env.user.id, 'name': self.name, 'state': self.state}
+        self.pool.get('helpdesk.track.follow').create(vals)
 
 
 class Answer(models.Model):
@@ -53,28 +71,6 @@ class Answer(models.Model):
         res.sudo().confirm_registration()
         return res
 
-    @api.multi
-    def action_open(self):
-        self.state = 'open'
-
-    @api.multi
-    def action_solved(self):
-        self.state = 'solved'
-
-    @api.multi
-    def action_deleted(self):
-        self.state = 'deleted'
-
-    @api.multi
-    def action_track(self):
-        vals = {'order_id': self.order_id, 'user_id': self.env.user.id, 'name': self.name, 'state': self.state}
-        self.pool.get('helpdesk.track.follow').create(vals)
-
-    @api.multi 
-    def action_assign(self):
-        vals = {'order_id': self.order_id, 'user_id': self.env.user.id, 'name': self.name, 'state': self.state}
-        self.pool.get('helpdesk.track.follow').create(vals)
-
 
 class Track_Follow(models.Model):
     _name = 'helpdesk.track.follow'
@@ -87,7 +83,7 @@ class Track_Follow(models.Model):
         default=lambda self: self.env.user.id, store=True)
     partner_id = fields.Many2one(
         'res.partner', string='Employee_Manager',
-        default=lambda self: self.env.user.partner_id.id store=True)
+        default=lambda self: self.env.user.partner_id.id, store=True)
     name = fields.Char(related='order_id.name', store=True)
     state = fields.Selection(related='order_id.state', store=True)
 
