@@ -2,26 +2,38 @@
 <openerp>
 	<data>
 		<!-- ANSWER ORDER FORM VIEW -->
-		<record model="ir.ui.view" id="order_form_view">
+		<record model="ir.ui.view" id="answer_form_view">
 			<field name="name">order.form</field>
 			<field name="model">helpdesk.answer</field>
 			<field name="arch" type="xml">
+				<form string="Answer Form">
+					<button name="action_message" type="object" string="Send message" class="oe_highlight"/>
+					<sheet>
+						<group>
+							<field name="name" readonly="1"/>
+							<field name="description" readonly="1"/>
+							<field name="message"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record model="ir.ui.view" id="order_form_view">
+			<field name="name">order.form</field>
+			<field name="model">helpdesk.order</field>
+			<field name="arch" type="xml">
 				<form string="Order Form">
 					<header>
-						<button name="action_open" type="object" groups="base.employee,base.company_manager" string="Open" states="open" class="oe_highlight"/>
-						<button name="action_solved" type="object" groups="base.employee,base.company_manager" string="Solved" states="solved" class="oe_highlight"/>
-						<button name="action_deleted" type="object" groups="base.company_manager" string="Delete" states="deleted" class="oe_highlight"/>
-						<button name="action_message" type="object" string="Send message" class="oe_highlight"/>
-						<button name="action_track" type="object" groups="base.agents" string="Track" states="tracked" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
-						<button name="action_assign" type="object" groups="base.helpdesk_manager" string="Assign" states="tracked" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
-                        <field name="state" widget="statusbar"/>
+						<button name="action_solved" type="object" groups="base.employee,base.company_manager" string="Solved" class="oe_highlight"/>
+						<button name="action_deleted" type="object" groups="base.company_manager" string="Delete" class="oe_highlight"/>
+						<button name="action_track" type="object" groups="base.agents" string="Track" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
+						<button name="action_assign" type="object" groups="base.helpdesk_manager" string="Assign" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
                     </header>
-
 					<sheet>
 						<group>
 							<field name="name"/>
-							<field name="description"/>
-							<field name="message"/>
+							<field name="content"/>
 						</group>
 					</sheet>
 				</form>
@@ -41,7 +53,7 @@
 			<field name="model">helpdesk.order</field>
 			<field name="arch" type="xml">
 				<tree string="My Orders">
-					<button string="New Order" name="%(action_order_form_view)d" type="action"/>
+					<!-- <button string="New Order" name="%(action_order_form_view)d" type="action"/> -->
 					<field name="name" domain="['&amp;',('partner_id','=',user.partner_id.id), ('company_id','=',user.partner_id.company_id.id)]" readonly="1"/>
 					<field name="state" domain="['&amp;',('partner_id','=',user.partner_id.id), ('company_id','=',user.partner_id.company_id.id)]" readonly="1"/>
 				</tree>
@@ -65,7 +77,7 @@
 			<field name="model">helpdesk.order</field>
 			<field name="arch" type="xml">
 				<tree string="Orders">
-					<button string="New Order" name="%(action_order_form_view)d" type="action"/>
+					<!-- <button string="New Order" name="%(action_order_form_view)d" type="action"/> -->
 					<field name="name" domain="[('company_id','=',user.partner_id.company_id.id)]" readonly="1"/>
 					<field name="state" domain="[('company_id','=',user.partner_id.company_id.id)]" readonly="1"/>
 				</tree>
@@ -88,7 +100,7 @@
 			<field name="name">agent.tracked.order.tree</field>
 			<field name="model">helpdesk.track.follow</field>
 			<field name="arch" type="xml">
-				<tree string="Tracked Orders">
+				<tree string="Tracked Orders" create="false">
 					<field name="name" domain="[('user_id','=',user.id)]" readonly="1"/>
 					<field name="state" domain="[('user_id','=',user.id)]" readonly="1"/>
 				</tree>
@@ -101,9 +113,6 @@
 			<field name="view_type">form</field>
 			<field name="view_mode">tree,form</field>
 			<field name="view_id" ref="tracked_order_tree_view"/>
-			<field name="help" type="html">
-				<p class="oe_view_nocontent_create">Track the first order</p>
-			</field>
 		</record> 
 
 		<!-- ORDER VIEW TO LIST OPEN ORDERS TO AGENT -->
@@ -111,7 +120,7 @@
 			<field name="name">agent.open.order.tree</field>
 			<field name="model">helpdesk.order</field>
 			<field name="arch" type="xml">
-				<tree string="Open Orders">
+				<tree string="Open Orders" create="false">
 					<field name="name" domain="[('state','=','open')]" readonly="1"/>
 					<field name="state" domain="[('state','=','open')]" readonly="1"/>
 				</tree>
@@ -131,7 +140,7 @@
 			<field name="name">helpdesk.manager.order.tree</field>
 			<field name="model">helpdesk.order</field>
 			<field name="arch" type="xml">
-				<tree string="Orders">
+				<tree string="Orders" create="false">
 					<field name="name" readonly="1"/>
 					<field name="state" readonly="1"/>
 				</tree>
@@ -154,11 +163,11 @@
 		<menuitem id="helpdesk_menu" name="HelpDesk" parent="main_helpdesk_menu"/>
 
 		<!-- Submenu -->
-		<menuitem id="my_order_menu" name="My Orders" groups="employee,company_manager" parent="helpdesk_menu" action="action_my_order_tree_view"/>
-		<menuitem id="company_order_menu" name="Company Orders" groups="company_manager" parent="helpdesk_menu" action="action_company_order_tree_view"/>
-		<menuitem id="tracked_order_menu" name="Tracked Orders" groups="agents" parent="helpdesk_menu" action="action_tracked_order_tree_view"/>
-		<menuitem id="open_order_menu" name="Open Orders" groups="agents" parent="helpdesk_menu" action="action_open_order_tree_view"/>
-		<menuitem id="all_orders_menu" name="All Orders" groups="helpdesk_manager" parent="helpdesk_menu" action="action_orders_tree_view"/>
+		<menuitem id="my_order_menu" name="My Orders" groups="base.employee,base.company_manager" parent="helpdesk_menu" action="action_my_order_tree_view"/>
+		<menuitem id="company_order_menu" name="Company Orders" groups="base.company_manager" parent="helpdesk_menu" action="action_company_order_tree_view"/>
+		<menuitem id="tracked_order_menu" name="Tracked Orders" groups="base.agents" parent="helpdesk_menu" action="action_tracked_order_tree_view"/>
+		<menuitem id="open_order_menu" name="Open Orders" groups="base.agents" parent="helpdesk_menu" action="action_open_order_tree_view"/>
+		<menuitem id="all_orders_menu" name="All Orders" groups="base.helpdesk_manager" parent="helpdesk_menu" action="action_orders_tree_view"/>
 
 	</data>
 </openerp>
