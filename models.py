@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields, api
+from openerp import models, fields, api, _
 
 class Order(models.Model):
     _name = 'helpdesk.order'
 
     partner_id = fields.Many2one(
-        'res.partner', string='Employee',
-        default=lambda self: self.env.user.partner_id.id, store=True, invisible="1")
+        'res.partner', string=_('Employee'),
+        default=lambda self: self.env.user.partner_id.id, store=True)
     company_id = fields.Many2one(
-        'res.partner', string='Company',
-        default=lambda self: self.env.user.partner_id.company_id.id, store=True, invisible="1")
-    name = fields.Char(string="Title", required=True, store=True)
-    content = fields.Text(string="Description", required=True, store=True)
+        'res.partner', string=_('Company'),
+        default=lambda self: self.env.user.partner_id.company_id.id, store=True)
+    name = fields.Char(string=_("Title"), required=True, store=True)
+    content = fields.Text(string=_("Description"), required=True, store=True)
     states = fields.Selection([
-        ('deleted', "Deleted"),
-        ('solved', "Solved"),
-        ('open', "Open"),
+        ('deleted', _("Deleted")),
+        ('solved', _("Solved")),
+        ('open', _("Open")),
     ], default='open', store=True)
 
     @api.multi
@@ -55,14 +55,14 @@ class Answer(models.Model):
     _name = 'helpdesk.answer'
 
     order_id = fields.Many2one(
-        'helpdesk.order', string='Order', required=True,
+        'helpdesk.order', string=_('Order'), required=True,
         readonly=True)
     user_id = fields.Many2one(
-        'res.users', string='Agent',
+        'res.users', string=_('Agent'),
         default=lambda self: self.env.user.id, store=True)
     name = fields.Char(related='order_id.name', store=True)
     description = fields.Text(related='order_id.content', store=True)
-    message = fields.Text(string="Message", required=True, domain=[('state', '=', 'open')], store=True)
+    message = fields.Text(string=_("Message"), required=True, domain=[('state', '=', 'open')], store=True)
     state = fields.Selection(related='order_id.state', store=True)
 
     @api.multi
@@ -76,13 +76,13 @@ class Track_Follow(models.Model):
     _name = 'helpdesk.track.follow'
 
     order_id = fields.Many2one(
-        'helpdesk.order', string='Order', required=True,
+        'helpdesk.order', string=_('Order'), required=True,
         readonly=True, store=True)
     user_id = fields.Many2one(
-        'res.users', string='Agent',
+        'res.users', string=_('Agent'),
         default=lambda self: self.env.user.id, store=True)
     partner_id = fields.Many2one(
-        'res.partner', string='Employee_Manager',
+        'res.partner', string=_('Employee or Manager'),
         default=lambda self: self.env.user.partner_id.id, store=True)
     name = fields.Char(related='order_id.name', store=True)
     state = fields.Selection(related='order_id.state', store=True)
