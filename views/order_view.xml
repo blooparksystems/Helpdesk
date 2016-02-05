@@ -14,7 +14,6 @@
 						<button name="action_message" type="object" string="Send message" class="oe_highlight"/>
 						<button name="action_track" type="object" groups="base.agents" string="Track" states="tracked" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
 						<button name="action_assign" type="object" groups="base.helpdesk_manager" string="Assign" states="tracked" class="oe_highlight" attrs="{'invisible:[('state','=','tracked')]'}"/>
-                        <field name="state" widget="statusbar"/>
                     </header>
 
 					<sheet>
@@ -88,7 +87,7 @@
 			<field name="name">agent.tracked.order.tree</field>
 			<field name="model">helpdesk.track.follow</field>
 			<field name="arch" type="xml">
-				<tree string="Tracked Orders">
+				<tree string="Tracked Orders" create="false">
 					<field name="name" domain="[('user_id','=',user.id)]" readonly="1"/>
 					<field name="state" domain="[('user_id','=',user.id)]" readonly="1"/>
 				</tree>
@@ -101,9 +100,6 @@
 			<field name="view_type">form</field>
 			<field name="view_mode">tree,form</field>
 			<field name="view_id" ref="tracked_order_tree_view"/>
-			<field name="help" type="html">
-				<p class="oe_view_nocontent_create">Track the first order</p>
-			</field>
 		</record> 
 
 		<!-- ORDER VIEW TO LIST OPEN ORDERS TO AGENT -->
@@ -111,7 +107,7 @@
 			<field name="name">agent.open.order.tree</field>
 			<field name="model">helpdesk.order</field>
 			<field name="arch" type="xml">
-				<tree string="Open Orders">
+				<tree string="Open Orders" create="false">
 					<field name="name" domain="[('state','=','open')]" readonly="1"/>
 					<field name="state" domain="[('state','=','open')]" readonly="1"/>
 				</tree>
@@ -131,7 +127,7 @@
 			<field name="name">helpdesk.manager.order.tree</field>
 			<field name="model">helpdesk.order</field>
 			<field name="arch" type="xml">
-				<tree string="Orders">
+				<tree string="Orders" create="false">
 					<field name="name" readonly="1"/>
 					<field name="state" readonly="1"/>
 				</tree>
@@ -154,11 +150,11 @@
 		<menuitem id="helpdesk_menu" name="HelpDesk" parent="main_helpdesk_menu"/>
 
 		<!-- Submenu -->
-		<menuitem id="my_order_menu" name="My Orders" groups="employee,company_manager" parent="helpdesk_menu" action="action_my_order_tree_view"/>
-		<menuitem id="company_order_menu" name="Company Orders" groups="company_manager" parent="helpdesk_menu" action="action_company_order_tree_view"/>
-		<menuitem id="tracked_order_menu" name="Tracked Orders" groups="agents" parent="helpdesk_menu" action="action_tracked_order_tree_view"/>
-		<menuitem id="open_order_menu" name="Open Orders" groups="agents" parent="helpdesk_menu" action="action_open_order_tree_view"/>
-		<menuitem id="all_orders_menu" name="All Orders" groups="helpdesk_manager" parent="helpdesk_menu" action="action_orders_tree_view"/>
+		<menuitem id="my_order_menu" name="My Orders" groups="base.employee,base.company_manager" parent="helpdesk_menu" action="action_my_order_tree_view"/>
+		<menuitem id="company_order_menu" name="Company Orders" groups="base.company_manager" parent="helpdesk_menu" action="action_company_order_tree_view"/>
+		<menuitem id="tracked_order_menu" name="Tracked Orders" groups="base.agents" parent="helpdesk_menu" action="action_tracked_order_tree_view"/>
+		<menuitem id="open_order_menu" name="Open Orders" groups="base.agents" parent="helpdesk_menu" action="action_open_order_tree_view"/>
+		<menuitem id="all_orders_menu" name="All Orders" groups="base.helpdesk_manager" parent="helpdesk_menu" action="action_orders_tree_view"/>
 
 	</data>
 </openerp>

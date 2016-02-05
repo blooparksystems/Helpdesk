@@ -1,7 +1,11 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-order_manager,order manager,model_helpdesk_order,company_manager,1,1,1,1
-order_read_write,order read write,model_helpdesk_order,employee,1,1,1,0
-helpdesk_answer_manager,helpdesk answer manager,model_helpdesk_answer,helpdesk_manager,1,1,1,1
-helpdesk_track_manager,helpdesk track manager,model_helpdesk_track_follow,helpdesk_manager,1,1,1,1
-helpdesk_answer_read_write,helpdesk answer read write,model_helpdesk_answer,agents,1,1,1,0
-helpdesk_track_read_write,helpdesk track read write,model_helpdesk_track_follow,agents,1,1,1,0
+order_manager,order manager,model_helpdesk_order,base.company_manager,1,1,1,1
+order_read_write,order read write,model_helpdesk_order,base.employee,1,1,1,0
+order_agent_read,order agent read,model_helpdesk_order,base.agents,1,0,0,0
+order_manager_read,order manager read,model_helpdesk_order,base.helpdesk_manager,1,0,0,0
+answer_manager,answer manager,model_helpdesk_answer,base.company_manager,1,1,1,0
+answer_read_write,answer read write,model_helpdesk_answer,base.employee,1,1,1,0
+helpdesk_answer_manager,helpdesk answer manager,model_helpdesk_answer,base.helpdesk_manager,1,1,1,1
+helpdesk_track_manager,helpdesk track manager,model_helpdesk_track_follow,base.helpdesk_manager,1,1,0,1
+helpdesk_answer_read_write,helpdesk answer read write,model_helpdesk_answer,base.agents,1,1,1,1
+helpdesk_track_read_write,helpdesk track read write,model_helpdesk_track_follow,base.agents,1,1,0,1

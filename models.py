@@ -6,19 +6,18 @@ class Order(models.Model):
     _name = 'helpdesk.order'
 
     partner_id = fields.Many2one(
-        'res.partner', string='Employee_Manager',
-        default=lambda self: self.env.user.partner_id.id)
+        'res.partner', string='Employee',
+        default=lambda self: self.env.user.partner_id.id, store=True)
     company_id = fields.Many2one(
-        'res.partner', string='Employee_Manager',
-        default=lambda self: self.env.user.partner_id.company_id.id)
-    name = fields.Char(string="Title", required=True)
-    content = fields.Text(string="Description", required=True)
+        'res.partner', string='Company',
+        default=lambda self: self.env.user.partner_id.company_id.id, store=True)
+    name = fields.Char(string="Title", required=True, store=True)
+    content = fields.Text(string="Description", required=True, store=True)
     state = fields.Selection([
         ('deleted', "Deleted"),
         ('solved', "Solved"),
         ('open', "Open"),
-        ('tracked', "Tracked"),
-    ], default='open')
+    ], default='open', store=True)
 
     @api.multi
     def write(self, vals):
@@ -31,7 +30,7 @@ class Order(models.Model):
     def create(self, vals):
         res = super(Order, self).create(vals)
         res.sudo().confirm_registration()
-        return registration
+        return res
 
 
 class Answer(models.Model):
@@ -41,12 +40,12 @@ class Answer(models.Model):
         'helpdesk.order', string='Order', required=True,
         readonly=True)
     user_id = fields.Many2one(
-        'res.users', string='Agent_Manager',
-        default=lambda self: self.env.user.id)
-    name = fields.Char(related='order_id.name')
-    description = fields.Text(related='order_id.content')
-    message = fields.Text(string="Message", required=True)
-    state = fields.Selection(related='order_id.state')
+        'res.users', string='Agent',
+        default=lambda self: self.env.user.id, store=True)
+    name = fields.Char(related='order_id.name', store=True)
+    description = fields.Text(related='order_id.content', store=True)
+    message = fields.Text(string="Message", required=True, domain=[('state', '=', 'open')], store=True)
+    state = fields.Selection(related='order_id.state', store=True)
 
     @api.multi
     def action_message(self, vals):
@@ -68,13 +67,11 @@ class Answer(models.Model):
 
     @api.multi
     def action_track(self):
-        self.state = 'tracked'
         vals = {'order_id': self.order_id, 'user_id': self.env.user.id, 'name': self.name, 'state': self.state}
         self.pool.get('helpdesk.track.follow').create(vals)
 
     @api.multi 
     def action_assign(self):
-        self.state = 'tracked'
         vals = {'order_id': self.order_id, 'user_id': self.env.user.id, 'name': self.name, 'state': self.state}
         self.pool.get('helpdesk.track.follow').create(vals)
 
@@ -84,15 +81,15 @@ class Track_Follow(models.Model):
 
     order_id = fields.Many2one(
         'helpdesk.order', string='Order', required=True,
-        readonly=True)
+        readonly=True, store=True)
     user_id = fields.Many2one(
-        'res.users', string='Agent_Manager',
-        default=lambda self: self.env.user.id)
+        'res.users', string='Agent',
+        default=lambda self: self.env.user.id, store=True)
     partner_id = fields.Many2one(
         'res.partner', string='Employee_Manager',
-        default=lambda self: self.env.user.partner_id.id)
-    name = fields.Char(related='order_id.name')
-    state = fields.Selection(related='order_id.state')
+        default=lambda self: self.env.user.partner_id.id store=True)
+    name = fields.Char(related='order_id.name', store=True)
+    state = fields.Selection(related='order_id.state', store=True)
 
     @api.multi
     def create(self, vals):
